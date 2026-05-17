@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Philosophy Club @ Baruch College</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=DM+Mono:ital,wght@0,300;0,400;1,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ink: #1a1208;
+    --cream: #f5f0e8;
+    --aged: #e8dfc8;
+    --gold: #b8860b;
+    --gold-light: #d4a843;
+    --rust: #8b3a2a;
+    --muted: #6b5f4e;
+    --paper: #faf7f0;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* NOISE TEXTURE OVERLAY */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1000;
+  }
+
+  /* NAV */
+  nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 4rem;
+    border-bottom: 1px solid var(--gold);
+    position: sticky;
+    top: 0;
+    background: var(--paper);
+    z-index: 100;
+  }
+
+  .nav-logo {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2.5rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--gold); }
+
+  /* HERO */
+  .hero {
+    min-height: 88vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-left {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 5rem 4rem 5rem 4rem;
+    position: relative;
+    z-index: 2;
+  }
+
+  .hero-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1.5rem;
+  }
+
+  .hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3.5rem, 5vw, 6rem);
+    line-height: 1.0;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 0.5rem;
+  }
+
+  .hero-title em {
+    font-style: italic;
+    color: var(--gold);
+  }
+
+  .hero-subtitle {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.2rem, 2vw, 1.8rem);
+    font-style: italic;
+    color: var(--muted);
+    margin-bottom: 2.5rem;
+    line-height: 1.4;
+  }
+
+  .hero-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    margin-bottom: 3rem;
+  }
+
+  .hero-meta-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.78rem;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+  }
+
+  .hero-meta-item::before {
+    content: '—';
+    color: var(--gold);
+  }
+
+  .hero-cta {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .btn {
+    display: inline-block;
+    padding: 0.8rem 2rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: all 0.25s;
+    cursor: pointer;
+    border: none;
+  }
+
+  .btn-primary {
+    background: var(--ink);
+    color: var(--paper);
+    border: 1px solid var(--ink);
+  }
+
+  .btn-primary:hover {
+    background: var(--gold);
+    border-color: var(--gold);
+    color: var(--ink);
+  }
+
+  .btn-outline {
+    background: transparent;
+    color: var(--ink);
+    border: 1px solid var(--gold);
+  }
+
+  .btn-outline:hover {
+    background: var(--gold);
+    color: var(--ink);
+  }
+
+  .hero-right {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--aged);
+    border-left: 1px solid var(--gold);
+    overflow: hidden;
+  }
+
+  .hero-ornament {
+    position: absolute;
+    font-family: 'Playfair Display', serif;
+    font-size: 28rem;
+    font-weight: 700;
+    color: rgba(184,134,11,0.06);
+    line-height: 1;
+    user-select: none;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .hero-quote {
+    position: relative;
+    z-index: 2;
+    padding: 3rem;
+    text-align: center;
+  }
+
+  .hero-quote blockquote {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    font-style: italic;
+    line-height: 1.6;
+    color: var(--ink);
+    margin-bottom: 1.5rem;
+  }
+
+  .hero-quote cite {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-style: normal;
+  }
+
+  /* DECORATIVE RULE */
+  .ornament-rule {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin: 5rem 4rem;
+  }
+
+  .ornament-rule::before,
+  .ornament-rule::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--gold), transparent);
+  }
+
+  .ornament-rule span {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    color: var(--gold);
+    white-space: nowrap;
+  }
+
+  /* SECTIONS */
+  section { padding: 4rem; }
+
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 3rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .section-label::after {
+    content: '';
+    flex: 0 0 60px;
+    height: 1px;
+    background: var(--gold);
+  }
+
+  /* ABOUT */
+  #about {
+    background: var(--cream);
+    border-top: 1px solid var(--gold);
+    border-bottom: 1px solid var(--gold);
+  }
+
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 3rem;
+  }
+
+  .about-block h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    font-style: italic;
+    color: var(--ink);
+    margin-bottom: 1rem;
+  }
+
+  .about-block p {
+    font-size: 0.92rem;
+    line-height: 1.8;
+    color: var(--muted);
+  }
+
+  .rule-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    margin-bottom: 0.8rem;
+    font-size: 0.92rem;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  .rule-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--gold);
+    flex-shrink: 0;
+    margin-top: 0.25rem;
+  }
+
+  /* TEAM */
+  #team { padding: 5rem 4rem; }
+
+  .team-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.8rem;
+    font-style: italic;
+    margin-bottom: 3.5rem;
+    color: var(--ink);
+  }
+
+  .team-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+  }
+
+  .team-card {
+    border: 1px solid var(--aged);
+    padding: 2rem 1.5rem;
+    position: relative;
+    transition: border-color 0.25s;
+    background: var(--paper);
+  }
+
+  .team-card:hover {
+    border-color: var(--gold);
+  }
+
+  .team-card::before {
+    content: attr(data-initials);
+    display: block;
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    font-style: italic;
+    color: var(--gold-light);
+    margin-bottom: 1.5rem;
+    opacity: 0.5;
+  }
+
+  .team-role {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.5rem;
+  }
+
+  .team-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.25rem;
+    color: var(--ink);
+    margin-bottom: 1rem;
+    line-height: 1.2;
+  }
+
+  .team-major {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--muted);
+    margin-bottom: 1.25rem;
+    letter-spacing: 0.03em;
+  }
+
+  .team-likes {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    font-size: 0.8rem;
+    color: var(--muted);
+  }
+
+  .team-likes span {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .like-tag { color: var(--gold); font-family: 'DM Mono', monospace; font-size: 0.65rem; }
+
+  /* EVENTS */
+  #events {
+    background: var(--ink);
+    color: var(--paper);
+  }
+
+  .events-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 3rem;
+  }
+
+  .events-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.8rem;
+    font-style: italic;
+    color: var(--paper);
+  }
+
+  .events-label {
+    color: var(--gold);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+  }
+
+  .event-list {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .event-item {
+    display: grid;
+    grid-template-columns: 90px 1fr auto;
+    align-items: center;
+    gap: 2rem;
+    padding: 1.25rem 0;
+    border-bottom: 1px solid rgba(184,134,11,0.2);
+    transition: background 0.2s;
+  }
+
+  .event-item:hover {
+    background: rgba(184,134,11,0.04);
+    margin: 0 -4rem;
+    padding-left: 4rem;
+    padding-right: 4rem;
+  }
+
+  .event-date {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--gold);
+    letter-spacing: 0.08em;
+  }
+
+  .event-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.05rem;
+    color: var(--paper);
+  }
+
+  .event-type {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 0.3rem 0.75rem;
+    border: 1px solid;
+  }
+
+  .type-guest { border-color: var(--gold-light); color: var(--gold-light); }
+  .type-casual { border-color: rgba(184,134,11,0.35); color: rgba(184,134,11,0.6); }
+  .type-collab { border-color: #7a9e7a; color: #7a9e7a; }
+  .type-special { border-color: #9e7a9e; color: #9e7a9e; }
+
+  /* CONNECT */
+  #connect { padding: 5rem 4rem; }
+
+  .connect-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.8rem;
+    font-style: italic;
+    margin-bottom: 3rem;
+    color: var(--ink);
+  }
+
+  .connect-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+  }
+
+  .connect-card {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 2rem;
+    border: 1px solid var(--aged);
+    text-decoration: none;
+    color: var(--ink);
+    transition: all 0.25s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .connect-card::after {
+    content: '→';
+    position: absolute;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    color: var(--gold);
+    transition: transform 0.2s;
+  }
+
+  .connect-card:hover {
+    border-color: var(--gold);
+    background: var(--cream);
+  }
+
+  .connect-card:hover::after {
+    transform: translate(4px, -4px);
+  }
+
+  .connect-icon {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 0.35rem 0.75rem;
+    background: var(--gold);
+    color: var(--paper);
+  }
+
+  .connect-card-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    font-style: italic;
+    color: var(--ink);
+  }
+
+  .connect-card-desc {
+    font-size: 0.85rem;
+    color: var(--muted);
+    line-height: 1.6;
+    max-width: 240px;
+  }
+
+  /* FOOTER */
+  footer {
+    background: var(--cream);
+    border-top: 1px solid var(--gold);
+    padding: 2.5rem 4rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .footer-logo {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 1.1rem;
+    color: var(--ink);
+  }
+
+  .footer-text {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .hero-eyebrow { animation: fadeUp 0.6s ease both; }
+  .hero-title { animation: fadeUp 0.6s 0.1s ease both; }
+  .hero-subtitle { animation: fadeUp 0.6s 0.2s ease both; }
+  .hero-meta { animation: fadeUp 0.6s 0.3s ease both; }
+  .hero-cta { animation: fadeUp 0.6s 0.4s ease both; }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--paper); }
+  ::-webkit-scrollbar-thumb { background: var(--gold); }
+
+  @media (max-width: 900px) {
+    nav { padding: 1.2rem 1.5rem; }
+    .nav-links { gap: 1.2rem; }
+    .hero { grid-template-columns: 1fr; }
+    .hero-right { display: none; }
+    .hero-left { padding: 3rem 1.5rem; }
+    section { padding: 3rem 1.5rem; }
+    .about-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .team-grid { grid-template-columns: 1fr 1fr; }
+    .connect-grid { grid-template-columns: 1fr; }
+    .events-header { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
+    .event-item { grid-template-columns: 70px 1fr; }
+    .event-type { display: none; }
+    footer { flex-direction: column; gap: 1rem; text-align: center; }
+    .ornament-rule { margin: 3rem 1.5rem; }
+    #team { padding: 3rem 1.5rem; }
+    #connect { padding: 3rem 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">Phil. Club @ Baruch</div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#team">Who's Who</a></li>
+    <li><a href="#events">Events</a></li>
+    <li><a href="#connect">Connect</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <p class="hero-eyebrow">Est. Baruch College · NVC 5-298</p>
+    <h1 class="hero-title">The<br><em>Philosophy</em><br>Club</h1>
+    <p class="hero-subtitle">Thinking together, better.</p>
+    <div class="hero-meta">
+      <div class="hero-meta-item">Thursdays, 12:00 – 2:30 pm</div>
+      <div class="hero-meta-item">NVC 5-298, Baruch College</div>
+      <div class="hero-meta-item">Guest lectures · Conversations · Crosswords · Good vibes ♡</div>
+    </div>
+    <div class="hero-cta">
+      <a href="#events" class="btn btn-primary">Upcoming Events</a>
+      <a href="#connect" class="btn btn-outline">Get Involved</a>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-ornament">φ</div>
+    <div class="hero-quote">
+      <blockquote>"The unexamined life is not worth living."</blockquote>
+      <cite>— Socrates, Apology</cite>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-label">About Us</div>
+  <div class="about-grid">
+    <div class="about-block">
+      <h3>What do we do?</h3>
+      <p>We gather every Thursday to explore the great questions of existence — through guest lectures by scholars, lively conversations, the occasional crossword, and the joy of thinking alongside one another. All are welcome.</p>
+    </div>
+    <div class="about-block">
+      <h3>Our Ground Rules</h3>
+      <div class="rule-item"><span class="rule-num">01</span><span>We treat our peers with respect and grace.</span></div>
+      <div class="rule-item"><span class="rule-num">02</span><span>Support your fellow students!</span></div>
+      <div class="rule-item"><span class="rule-num">03</span><span>There's no such thing as a stupid question ♡</span></div>
+    </div>
+    <div class="about-block">
+      <h3>When & Where</h3>
+      <p><strong style="font-weight:500;">Day:</strong> Every Thursday during the semester<br><br><strong style="font-weight:500;">Time:</strong> 12:00 pm – 2:30 pm<br><br><strong style="font-weight:500;">Location:</strong> Newman Vertical Campus, Room 5-298<br><br><strong style="font-weight:500;">Baruch College</strong>, CUNY · NYC</p>
+    </div>
+  </div>
+</section>
+
+<!-- TEAM -->
+<section id="team">
+  <div class="section-label">Who's Who · Spring 2026–2027</div>
+  <h2 class="team-title">Meet the Officers</h2>
+  <div class="team-grid">
+
+    <div class="team-card" data-initials="SK">
+      <div class="team-role">President</div>
+      <div class="team-name">Samara Kern</div>
+      <div class="team-major">Philosophy · Psychology</div>
+      <div class="team-likes">
+        <span><span class="like-tag">♡</span> Her cat, Jinx</span>
+        <span><span class="like-tag">✗</span> Eliminative Materialism</span>
+      </div>
+    </div>
+
+    <div class="team-card" data-initials="MM">
+      <div class="team-role">Vice President</div>
+      <div class="team-name">Michael Marcoux</div>
+      <div class="team-major">Philosophy</div>
+      <div class="team-likes">
+        <span><span class="like-tag">♡</span> Pallas Cats</span>
+        <span><span class="like-tag">✗</span> Small print in books</span>
+      </div>
+    </div>
+
+    <div class="team-card" data-initials="AS">
+      <div class="team-role">Secretary</div>
+      <div class="team-name">Andy Shi</div>
+      <div class="team-major">Journalism</div>
+      <div class="team-likes">
+        <span><span class="like-tag">♡</span> Chinese social media cats</span>
+        <span><span class="like-tag">✗</span> Cryptic crosswords</span>
+      </div>
+    </div>
+
+    <div class="team-card" data-initials="MY">
+      <div class="team-role">Treasurer</div>
+      <div class="team-name">Maxxam Yabut</div>
+      <div class="team-major">Philosophy</div>
+      <div class="team-likes">
+        <span><span class="like-tag">♡</span> Psychoanalysis</span>
+        <span><span class="like-tag">✗</span> Actuarial Science</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="ornament-rule"><span>§</span></div>
+
+<!-- EVENTS -->
+<section id="events">
+  <div class="events-header">
+    <div>
+      <div class="events-label">Spring Semester 2025</div>
+      <h2 class="events-title">Upcoming Events</h2>
+    </div>
+  </div>
+
+  <div class="event-list">
+
+    <div class="event-item">
+      <div class="event-date">Feb 19</div>
+      <div class="event-name">DSA Collab — Majorities & Manifestos: From Ideology to Infrastructure</div>
+      <div class="event-type type-collab">Collab</div>
+    </div>
+
+    <div class="event-item">
+      <div class="event-date">Feb 24</div>
+      <div class="event-name">New Club Fair Tabling</div>
+      <div class="event-type type-special">Special</div>
+    </div>
+
+    <div class="event-item">
+      <div class="event-date">Feb 26</div>
+      <div class="event-name">Casual Meeting</div>
+      <div class="event-type type-casual">Casual</div>
+    </div>
+
+    <div class="event-item">
+      <div class="event-date">Mar 5</div>
+      <div class="event-name">Casual Meeting</div>
+      <div class="event-type type-casual">Casual</div>
+    </div>
+
+    <div class="event-item">
+      <div class="event-date">Mar 12</div>
+      <div class="event-name">Elliot Schwarz — Optical Illusions</div>
+      <div class="event-type type-guest">Guest Lecture</div>
+    </div>
+
+    <div class="event-item">
+      <div class="event-date">Mar 19</div>
+      <div class="event-name">Casual Meeting</div>
+      <div class="event-type type-casual">Casual</div>
+    </div>
+
+    <div class="event-item">
+      <div class="event-date">Mar 26</div>
+      <div class="event-name">Elizabeth Edenburg — Consent in the Digital Age</div>
+      <div class="event-type type-guest">Guest Lecture</div>
+    </div>
+
+    <div class="event-item">
+      <div class="event-date">Apr 16</div>
+      <div class="event-name">Casual Meeting</div>
+      <div class="event-type type-casual">Casual</div>
+    </div>
+
+    <div class="event-item">
+      <div class="event-date">Apr 23</div>
+      <div class="event-name">Eric Mandelbaum — TBD</div>
+      <div class="event-type type-guest">Guest Lecture</div>
+    </div>
+
+    <div class="event-item">
+      <div class="event-date">Apr 30</div>
+      <div class="event-name">Second General Interest Meeting</div>
+      <div class="event-type type-special">Special</div>
+    </div>
+
+    <div class="event-item">
+      <div class="event-date">May 7</div>
+      <div class="event-name">Dillon Freed — New Theory of Consciousness</div>
+      <div class="event-type type-guest">Guest Lecture</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- CONNECT -->
+<section id="connect">
+  <div class="section-label">Stay in Touch</div>
+  <h2 class="connect-title">Get Connected</h2>
+  <div class="connect-grid">
+
+    <a href="https://www.instagram.com/philosophybaruch/" target="_blank" rel="noopener" class="connect-card">
+      <div class="connect-icon">Instagram</div>
+      <div class="connect-card-title">Follow Us</div>
+      <p class="connect-card-desc">Stay up to date with announcements, event reminders, and the occasional philosophical musing.</p>
+    </a>
+
+    <a href="https://drive.google.com/drive/folders/1615rVpXf0Wf8mz-aMVE80hxncGC4P4R7" target="_blank" rel="noopener" class="connect-card">
+      <div class="connect-icon">Drive</div>
+      <div class="connect-card-title">Club Resources</div>
+      <p class="connect-card-desc">Access readings, lecture materials, meeting notes, and shared documents on our Google Drive.</p>
+    </a>
+
+    <a href="https://docs.google.com/presentation/d/1iFPZ-xy6Uq9MZnK6Ezv1aKAka_xPKI4XFGHIWmYVCXQ/edit?slide=id.p#slide=id.p" target="_blank" rel="noopener" class="connect-card">
+      <div class="connect-icon">Slides</div>
+      <div class="connect-card-title">Welcome Presentation</div>
+      <p class="connect-card-desc">View our introductory presentation — a great starting point for anyone new to the club.</p>
+    </a>
+
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo">Philosophy Club @ Baruch College</div>
+  <div class="footer-text">Thursdays · 12–2:30pm · NVC 5-298 · Made with ♡ & good questions</div>
+</footer>
+
+</body>
+</html>
